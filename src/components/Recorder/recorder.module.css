@@ -1,0 +1,13 @@
+.component{
+    background-color: lightgoldenrodyellow;
+}
+
+.active {
+    background-color: red;
+    color: white;
+}
+
+.record-btn{
+    padding: 2px 15px;
+    font-size: 2rem;
+}
