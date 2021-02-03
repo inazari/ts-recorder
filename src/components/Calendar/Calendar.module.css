@@ -1,0 +1,11 @@
+.component {
+    background-color: #faf6d2;
+    border: 2px solid white;
+}
+
+.box {
+    border: 1px solid black;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: white;
+}

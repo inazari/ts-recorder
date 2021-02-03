@@ -1,7 +1,16 @@
-import {Action, AnyAction} from "redux";
+import {Action} from "redux";
 import {ThunkAction} from "redux-thunk";
 import {RootState} from "./store";
-import axios from "axios";
+import eventsJson from "../jsons/events.json"
+
+const LOAD_REQUEST = 'userEvents/load_request'
+const LOAD_SUCCESS = 'userEvents/load_success'
+const LOAD_FAILURE = 'userEvents/load_failure'
+
+const initialState: UserEventsState = {
+    byIds: {},
+    allIds: []
+}
 
 export interface UserEvent {
     id: number;
@@ -22,23 +31,12 @@ export const selectUserEventsArray = (rootState: RootState) => {
     return state.allIds.map(id => state.byIds[id])
 }
 
-const initialState: UserEventsState = {
-    byIds: {},
-    allIds: []
-}
-
-const LOAD_REQUEST = 'userEvents/load_request'
-
 interface LoadRequestAction extends Action<typeof LOAD_REQUEST> {
 }
-
-const LOAD_SUCCESS = 'userEvents/load_success'
 
 interface LoadFailureAction extends Action<typeof LOAD_FAILURE> {
     error: string
 }
-
-const LOAD_FAILURE = 'userEvents/load_failure'
 
 interface LoadSuccessAction extends Action<typeof LOAD_SUCCESS> {
     payload: {
@@ -51,17 +49,16 @@ export const loadUserEvent = (): ThunkAction<void, RootState, undefined, LoadReq
     dispatch({
         type: LOAD_REQUEST
     });
-
     try {
-        const res = await fetch('http://localhost/:3000/events/1');
+        const res = await fetch('http://localhost:3004/events');
         const events: UserEvent[] = await res.json();
-
+        console.log(events);
+        //const events: UserEvent[] = eventsJson.events
         dispatch({
             type: LOAD_SUCCESS,
             payload: {events}
         });
 
-        console.log(events);
     } catch (e) {
         dispatch({
             type: LOAD_FAILURE,
