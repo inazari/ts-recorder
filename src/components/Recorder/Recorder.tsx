@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectDateStart, start, stop} from "../../redux/recorder";
 import style from './recorder.module.css'
 import {addZero} from "../../lib/utils";
+import {createUserEvent} from "../../redux/user-events";
 
 
 const Recorder = () => {
@@ -21,6 +22,7 @@ const Recorder = () => {
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         if (started) {
+            dispatch(createUserEvent())
             dispatch(stop())
             setCount(0)
             window.clearInterval(interval.current)
