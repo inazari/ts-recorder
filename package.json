@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "npx concurrently -k 'json-server --watch db.json --port 3004' 'npm start'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

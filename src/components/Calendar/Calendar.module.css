@@ -9,3 +9,20 @@
     margin-bottom: 5px;
     background-color: white;
 }
+
+.btn-remove {
+    margin: 2px 7px;
+    border: none;
+    background-color: inherit;
+    color: red;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn-remove:hover{
+    color: #bc3a3a;
+}
+
+.btn-remove:active{
+    color: #831616;
+}

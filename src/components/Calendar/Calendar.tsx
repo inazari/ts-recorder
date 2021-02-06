@@ -2,8 +2,9 @@ import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from "react-redux";
 import {RootState} from "../../redux/store";
 import {selectUserEventsArray, loadUserEvent, UserEvent} from "../../redux/user-events";
-import {addZero} from "../../lib/utils";
+import {createDateKey} from "../../lib/utils";
 import style from "./Calendar.module.css"
+import EventItem from "./EventItem";
 
 const mapState = (state: RootState) => ({
     events: selectUserEventsArray(state)
@@ -17,16 +18,7 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
-interface Props extends PropsFromRedux {
-}
-
-const createDateKey = (date: Date) => {
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth() + 1;
-    const day = date.getUTCDate();
-    return `${year}-${addZero(month)}-${addZero(day)}`
-
-}
+interface Props extends PropsFromRedux {}
 
 const groupEventsByDay = (events: UserEvent[]) => {
     const groups: Record<string, UserEvent[]> = {};
@@ -71,8 +63,6 @@ const Calendar: React.FC<Props> = ({events, loadUserEvent}) => {
                 {sortedGroupKeys.map((dayKey, index) => {
                     const events = groupedEvents![dayKey];
                     const groupDate = new Date(dayKey);
-                    console.log(dayKey);
-                    console.log(groupDate);
                     const day = groupDate.getDate();
                     const month = groupDate.toLocaleString(undefined, {month: 'long'})
 
@@ -81,11 +71,8 @@ const Calendar: React.FC<Props> = ({events, loadUserEvent}) => {
                             <span>{day} {month}</span>
                         </div>
                         <div>
-                            {events.map((event, index) => {
-                                return <div key={index}>
-                                    <span>title: {event.title}</span>
-                                    <span> {createDateKey(new Date(event.dateStart))} - {createDateKey(new Date(event.dateEnd))}</span>
-                                </div>
+                            {events.map((event) => {
+                                return <EventItem key={`event_${event.id}`} event={event} />
                             })}
                         </div>
 
