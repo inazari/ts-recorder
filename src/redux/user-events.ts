@@ -207,7 +207,7 @@ export const deleteUserEvent = (id: UserEvent['id']): ThunkAction<Promise<void>,
 }
 
 
-function createSuccessReducer(state: UserEventsState, action: LoadSuccessAction) {
+function loadSuccessReducer(state: UserEventsState, action: LoadSuccessAction) {
     const {events} = action.payload
     return {
         ...state,
@@ -224,23 +224,31 @@ function updateSuccessReducer(state: UserEventsState, action: UpdateSuccessActio
     return {...state, ...state.byIds, [event.id]: event};
 }
 
+function deleteSuccessReducer(state: UserEventsState, action: DeleteSuccessAction) {
+    const {id} = action.payload
+    const newState = {
+        ...state,
+        byIds: {...state.byIds},
+        allIds: state.allIds.filter((soredId => soredId !== id))
+    }
+    delete newState.byIds[id]
+    return newState
+}
+
+function createSuccessReducer(state: UserEventsState, action: CreateSuccessAction) {
+    const {event} = action.payload
+    return {...state, allIds: [...state.allIds, event.id], byIds: {...state.byIds, [event.id]: event}};
+}
+
 const userEventReducer = (state: UserEventsState = initialState, action: LoadSuccessAction | CreateSuccessAction | DeleteSuccessAction | UpdateSuccessAction) => {
 
     switch (action.type) {
         case LOAD_SUCCESS:
-            return createSuccessReducer(state, action)
+            return loadSuccessReducer(state, action)
         case CREATE_SUCCESS:
-            const {event} = action.payload
-            return {...state, allIds: [...state.allIds, event.id], byIds: {...state.byIds, [event.id]: event}};
+            return createSuccessReducer(state, action)
         case DELETE_SUCCESS:
-            const {id} = action.payload
-            const newState = {
-                ...state,
-                byIds: {...state.byIds},
-                allIds: state.allIds.filter((soredId => soredId !== id))
-            }
-            delete newState.byIds[id]
-            return newState
+            return deleteSuccessReducer(state, action)
         case UPDATE_SUCCESS:
             return updateSuccessReducer(state, action)
         default:
