@@ -158,7 +158,7 @@ export const updateUserEvent = (userEvent: UserEvent): ThunkAction<Promise<void>
 
     try {
         const {id} = userEvent;
-        const response = await fetch(`https://localhost:3004/events/${id}`, {
+        const response = await fetch(`http://localhost:3004/events/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
