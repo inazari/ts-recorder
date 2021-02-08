@@ -1,10 +1,13 @@
 import React, {useEffect} from 'react';
 import {connect, ConnectedProps} from "react-redux";
 import {RootState} from "../../redux/store";
-import {selectUserEventsArray, loadUserEvent, UserEvent} from "../../redux/user-events";
+
 import {createDateKey} from "../../lib/utils";
 import style from "./Calendar.module.css"
 import EventItem from "./EventItem";
+import {selectUserEventsArray} from "../../store/userEvent/userEventsSelector";
+import {loadUserEvent} from "../../store/userEvent/userEvents.utils";
+import {IUserEvent} from "../../store/userEvent/userEventsSlice";
 
 const mapState = (state: RootState) => ({
     events: selectUserEventsArray(state)
@@ -20,10 +23,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 
 interface Props extends PropsFromRedux {}
 
-const groupEventsByDay = (events: UserEvent[]) => {
-    const groups: Record<string, UserEvent[]> = {};
+const groupEventsByDay = (events: IUserEvent[]) => {
+    const groups: Record<string, IUserEvent[]> = {};
 
-    const addToGroup = (dateKey: string, event: UserEvent) => {
+    const addToGroup = (dateKey: string, event: IUserEvent) => {
         if (groups[dateKey] === undefined) {
             groups[dateKey] = []
         }

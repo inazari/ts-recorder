@@ -1,8 +1,9 @@
-import {applyMiddleware, combineReducers, createStore} from 'redux'
-import userEventReducer from "./user-events";
-import recorderReducer from "./recorder"
+import {Action, applyMiddleware, combineReducers, createStore} from 'redux'
+import recorderReducer from "../store/recorder/recorderSlice"
+import userEventReducer from "../store/userEvent/userEventsSlice"
 import { composeWithDevTools } from 'redux-devtools-extension'
-import thunk from "redux-thunk";
+import thunk, {ThunkAction} from "redux-thunk";
+
 
 const rootReducer = combineReducers({
     userEvents: userEventReducer,
@@ -10,10 +11,13 @@ const rootReducer = combineReducers({
 })
 
 export type RootState = ReturnType<typeof rootReducer>
+export type TAppThunk = ThunkAction<void, RootState, null, Action<string>>;
 
 const store = createStore(rootReducer, composeWithDevTools(
     applyMiddleware(thunk)
 ))
+
+
 
 
 

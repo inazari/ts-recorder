@@ -15,7 +15,7 @@ const initialState: RecorderState = {
 type  StartAction = Action<typeof START>
 type  StopAction = Action<typeof STOP>
 
-export const start = (): StartAction => ({
+const start = (): StartAction => ({
     type: START
 })
 

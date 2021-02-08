@@ -1,11 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import style from "./Calendar.module.css";
-import {deleteUserEvent, updateUserEvent, UserEvent} from "../../redux/user-events";
+
 import {useDispatch} from "react-redux";
 import {createDateKey} from "../../lib/utils";
+import {IUserEvent} from "../../store/userEvent/userEventsSlice";
+import {deleteUserEvent, updateUserEvent} from "../../store/userEvent/userEvents.utils";
 
 interface Props {
-    event: UserEvent
+    event: IUserEvent
 }
 
 const EventItem: React.FC<Props> = ({event}) => {
@@ -13,7 +15,7 @@ const EventItem: React.FC<Props> = ({event}) => {
     const [editableTitle, setEditableTitle] = useState(false)
     const [title, setTitle] = useState<string>('')
     const handleDeleteClick = () => {
-        dispatch(deleteUserEvent(event.id))
+        dispatch(deleteUserEvent({id: event.id}))
     }
 
     const titleRef = useRef<HTMLInputElement>(null)
@@ -27,7 +29,6 @@ const EventItem: React.FC<Props> = ({event}) => {
 
 
     const handleTitleChange = (e: React.FormEvent<HTMLInputElement>) => {
-        console.log(e.currentTarget.value);
         setTitle(e.currentTarget.value);
     }
 
