@@ -3,7 +3,6 @@ import cx from 'classnames';
 import {useDispatch, useSelector} from "react-redux";
 import style from './recorder.module.css'
 import {addZero} from "../../lib/utils";
-import {IUserEvent} from "../../store/userEvent/userEventsSlice"
 import {start, stop} from "../../store/recorder/recorderSlice"
 import {selectDateStart} from "../../store/recorder/recorderSelectors";
 import {createUserEvent} from "../../store/userEvent/userEvents.utils";
@@ -13,7 +12,7 @@ const Recorder = () => {
     const dispatch = useDispatch()
     const dateStart = useSelector(selectDateStart)
     const started = dateStart !== '';
-    const [count, setCount] = useState<number>(0);
+    const [, setCount] = useState<number>(0);
     let interval = useRef<number>(0);
 
     useEffect(() => {
@@ -22,7 +21,7 @@ const Recorder = () => {
         };
     }, [])
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleClick = () => {
         if (started) {
             dispatch(createUserEvent())
             dispatch(stop())

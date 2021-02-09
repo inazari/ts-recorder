@@ -1,27 +1,12 @@
 import React, {useEffect} from 'react';
-import {connect, ConnectedProps} from "react-redux";
-import {RootState} from "../../redux/store";
+import {useDispatch, useSelector} from "react-redux";
 
 import {createDateKey} from "../../lib/utils";
 import style from "./Calendar.module.css"
 import EventItem from "./EventItem";
+import {IUserEvent} from "../../store/userEvent/userEventsSlice";
 import {selectUserEventsArray} from "../../store/userEvent/userEventsSelector";
 import {loadUserEvent} from "../../store/userEvent/userEvents.utils";
-import {IUserEvent} from "../../store/userEvent/userEventsSlice";
-
-const mapState = (state: RootState) => ({
-    events: selectUserEventsArray(state)
-})
-
-const mapDispatch = {
-    loadUserEvent
-}
-
-const connector = connect(mapState, mapDispatch);
-
-type PropsFromRedux = ConnectedProps<typeof connector>
-
-interface Props extends PropsFromRedux {}
 
 const groupEventsByDay = (events: IUserEvent[]) => {
     const groups: Record<string, IUserEvent[]> = {};
@@ -47,9 +32,12 @@ const groupEventsByDay = (events: IUserEvent[]) => {
     return groups
 }
 
-const Calendar: React.FC<Props> = ({events, loadUserEvent}) => {
+const Calendar: React.FC = () => {
+    const events = useSelector(selectUserEventsArray)
+    const dispatch= useDispatch()
+
     useEffect(() => {
-        loadUserEvent();
+        dispatch(loadUserEvent());
     }, [])
 
     let groupedEvents: ReturnType<typeof groupEventsByDay> | undefined;
@@ -87,4 +75,4 @@ const Calendar: React.FC<Props> = ({events, loadUserEvent}) => {
     );
 };
 
-export default connector(Calendar);
+export default Calendar;
