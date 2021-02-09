@@ -69,13 +69,7 @@ const usersEventsSlice = createSlice({
         }),
         updateUserEventSuccess: (state, action: PayloadAction<TUserEvent>): IUserEventsState => {
             const event = action.payload;
-            return {
-                ...state,
-                ...state.byIds,
-                [event.id]: event,
-                userEventsLoading: false,
-                userEventsError: null,
-            }
+            return {...state, byIds: {...state.byIds, [event.id]: event}};
         },
         deleteUserEventSuccess: (state, action: PayloadAction<{ id: IUserEvent['id'] }>): IUserEventsState => {
             const {id} = action.payload
