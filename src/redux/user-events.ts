@@ -221,7 +221,7 @@ function loadSuccessReducer(state: UserEventsState, action: LoadSuccessAction) {
 
 function updateSuccessReducer(state: UserEventsState, action: UpdateSuccessAction) {
     const {event} = action.payload
-    return {...state, ...state.byIds, [event.id]: event};
+    return {...state, byIds: {...state.byIds, [event.id]: event}};
 }
 
 function deleteSuccessReducer(state: UserEventsState, action: DeleteSuccessAction) {
