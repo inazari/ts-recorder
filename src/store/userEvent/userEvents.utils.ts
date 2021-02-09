@@ -1,6 +1,6 @@
 import {
     getUserEventsStart, getUsersEventError, getUsersEventSuccess,
-    updateUserEventSuccess, createUserEventSuccess, deleteUserEventSuccess, TUserEvent, IUserEvent
+    updateUserEventSuccess, createUserEventSuccess, deleteUserEventSuccess, IUserEvent
 } from "./userEventsSlice"
 import {TAppThunk} from "../../redux/store";
 import {selectDateStart} from "../../redux/recorder";
@@ -11,8 +11,8 @@ export const loadUserEvent = (): TAppThunk => async (dispatch) => {
 
     try {
         const res = await fetch('http://localhost:3004/events');
-        const events: TUserEvent[] = await res.json();
-        dispatch(getUsersEventSuccess(events))
+        const events: IUserEvent[] = await res.json();
+        dispatch(getUsersEventSuccess({events}))
 
     } catch (e) {
         dispatch(getUsersEventError('some error happened'))
@@ -59,7 +59,7 @@ export const updateUserEvent = (userEvent: IUserEvent): TAppThunk => async (disp
 
         const updatedEvent = await response.json();
 
-        dispatch(updateUserEventSuccess(updatedEvent))
+        dispatch(updateUserEventSuccess({event: updatedEvent}))
 
     } catch (e) {
         alert('update alert')

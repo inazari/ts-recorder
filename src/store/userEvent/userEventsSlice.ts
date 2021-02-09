@@ -2,19 +2,6 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 type  TError = string | null
 
-
-export type TUserEvent = {
-    title: string;
-    dateStart: string;
-    dateEnd: string;
-    id: number;
-}
-
-export interface IUserEvents {
-    events: TUserEvent[]
-}
-
-
 export interface IUserEvent {
     id: number;
     title: string;
@@ -49,8 +36,8 @@ const usersEventsSlice = createSlice({
                 userEventsError: null,
             }
         },
-        getUsersEventSuccess: (state, action: PayloadAction<TUserEvent[]>): IUserEventsState => {
-            const events = action.payload
+        getUsersEventSuccess: (state, action: PayloadAction<{events: IUserEvent[]}>): IUserEventsState => {
+            const {events} = action.payload
             return {
                 ...state,
                 userEventsLoading: false,
@@ -67,8 +54,8 @@ const usersEventsSlice = createSlice({
             userEventsLoading: false,
             userEventsError: payload,
         }),
-        updateUserEventSuccess: (state, action: PayloadAction<TUserEvent>): IUserEventsState => {
-            const event = action.payload;
+        updateUserEventSuccess: (state, action: PayloadAction<{ event: IUserEvent }>): IUserEventsState => {
+            const {event} = action.payload;
             return {...state, byIds: {...state.byIds, [event.id]: event}};
         },
         deleteUserEventSuccess: (state, action: PayloadAction<{ id: IUserEvent['id'] }>): IUserEventsState => {
